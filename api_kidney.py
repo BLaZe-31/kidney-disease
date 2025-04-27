@@ -7,7 +7,8 @@ import uvicorn
 import os
 from fastapi.middleware.cors import CORSMiddleware
 
-model = joblib.load(r"C:\\Code\\python vs code\\githubpedalna hai\\kidney-disease\\models\\kidney_disease_model.pkl")
+model = joblib.load(os.path.join("models", "kidney_disease_model.pkl"))
+
 
 
 app = FastAPI()
@@ -40,10 +41,18 @@ async def ping():
 
 @app.post("/predict")
 def predict(data: KidneyDiseaseInput):
-    input_data = np.array([[
-        data.feature1, data.feature2, data.feature3, data.feature4, 
-        data.feature5, data.feature6, data.feature7, data.feature8, data.feature9
-    ]])
+    input_data = np.array([[ 
+    data.SerumCreatinine,
+    data.GFR,
+    data.ProteinInUrine,
+    data.FastingBloodSugar,
+    data.BUNLevels,
+    data.HbA1c,
+    data.SerumElectrolytesSodium,
+    data.SystolicBP,
+    data.HemoglobinLevels
+]])
+
 
     prediction = model.predict(input_data)[0]
     confidence = model.predict_proba(input_data)[0][prediction] * 100
