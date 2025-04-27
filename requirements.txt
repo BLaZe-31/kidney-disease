@@ -1,3 +1,4 @@
+imbalanced-learn
 fastapi
 uvicorn
 pandas
